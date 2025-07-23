@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harappan Civilization Quiz - Series 1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 800px;
+            width: 100%;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .quiz-title {
+            color: #333;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .quiz-subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .quiz-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 10px;
+            color: white;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .timer {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .question-container {
+            margin-bottom: 25px;
+        }
+
+        .question {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            padding: 20px;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+
+        .options {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .option {
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            font-size: 1.1em;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+        }
+
+        .option.correct {
+            background: linear-gradient(135deg, #c8e6c9, #81c784);
+            border-color: #4caf50;
+            color: #2e7d32;
+        }
+
+        .option.incorrect {
+            background: linear-gradient(135deg, #ffcdd2, #f48fb1);
+            border-color: #f44336;
+            color: #c62828;
+        }
+
+        .explanation {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border-left: 4px solid #9c27b0;
+            display: none;
+        }
+
+        .explanation.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .explanation h4 {
+            color: #6a1b9a;
+            margin-bottom: 10px;
+        }
+
+        .explanation p {
+            color: #4a148c;
+            line-height: 1.5;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+            color: #333;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .final-score {
+            text-align: center;
+            padding: 30px;
+            display: none;
+        }
+
+        .final-score.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .start-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .start-screen h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .start-screen p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .quiz-info {
+            background: linear-gradient(135deg, #e8f5e8, #c8e6c9);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 4px solid #4caf50;
+        }
+
+        .quiz-info ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .quiz-info li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .quiz-info li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .quiz-container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .quiz-title {
+                font-size: 1.8em;
+            }
+            
+            .quiz-stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .question {
+                font-size: 1.1em;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1 class="quiz-title">Harappan Civilization Quiz</h1>
+            <p class="quiz-subtitle">Series 1 - Explore the Ancient Indus Valley</p>
+        </div>
+
+        <div class="start-screen" id="startScreen">
+            <h2>Welcome to the Harappan Civilization Quiz!</h2>
+            <p>Test your knowledge about one of the world's earliest urban civilizations. This comprehensive quiz covers the fascinating Harappan (Indus Valley) Civilization that flourished from 2600-1900 BCE.</p>
+            
+            <div class="quiz-info">
+                <ul>
+                    <li>60 challenging questions with explanations</li>
+                    <li>15 seconds per question</li>
+                    <li>Immediate feedback with detailed explanations</li>
+                    <li>Topics: archaeology, urban planning, culture, trade, and more</li>
+                    <li>Learn about Harappa, Mohenjo-daro, and other ancient sites</li>
+                </ul>
+            </div>
+            
+            <button class="btn btn-primary" onclick="startQuiz()">Start Quiz</button>
+        </div>
+
+        <div class="quiz-content" id="quizContent" style="display: none;">
+            <div class="quiz-stats">
+                <div class="stat">
+                    <div class="stat-number" id="currentQuestion">1</div>
+                    <div class="stat-label">Question</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number" id="score">0</div>
+                    <div class="stat-label">Score</div>
+                </div>
+                <div class="timer" id="timer">15s</div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="question-container" id="questionContainer">
+                <div class="question" id="questionText"></div>
+                <div class="options" id="optionsContainer"></div>
+                <div class="explanation" id="explanation">
+                    <h4>Explanation:</h4>
+                    <p id="explanationText"></p>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="btn btn-secondary" id="nextBtn" onclick="nextQuestion()" disabled>Next Question</button>
+            </div>
+        </div>
+
+        <div class="final-score" id="finalScore">
+            <h2>Quiz Complete!</h2>
+            <div class="score-circle">
+                <div id="finalScorePercent">0%</div>
+                <div style="font-size: 0.5em;">Score</div>
+            </div>
+            <p id="scoreMessage"></p>
+            <button class="btn btn-primary" onclick="restartQuiz()">Try Again</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "What is the approximate time period of the Harappan Civilization?",
+                options: ["3000-2000 BCE", "2600-1900 BCE", "1500-500 BCE", "4000-3000 BCE"],
+                correct: 1,
+                explanation: "The Harappan Civilization flourished from approximately 2600-1900 BCE, making it contemporary with ancient Egypt and Mesopotamia. This period is divided into Early, Mature, and Late Harappan phases."
+            },
+            {
+                question: "Which river system was central to the Harappan Civilization?",
+                options: ["Ganges", "Indus", "Brahmaputra", "Narmada"],
+                correct: 1,
+                explanation: "The Indus River system was the lifeline of the Harappan Civilization. The civilization is also known as the Indus Valley Civilization because most of its major cities were located along the Indus River and its tributaries."
+            },
+            {
+                question: "What are the two major cities of the Harappan Civilization?",
+                options: ["Delhi and Mumbai", "Harappa and Mohenjo-daro", "Lothal and Kalibangan", "Dholavira and Banawali"],
+                correct: 1,
+                explanation: "Harappa and Mohenjo-daro are the two largest and most important cities discovered from the Harappan Civilization. Harappa was discovered first (giving the civilization its name), while Mohenjo-daro means 'Mound of the Dead' in Sindhi."
+            },
+            {
+                question: "The Harappan script has been:",
+                options: ["Fully deciphered", "Partially deciphered", "Not yet deciphered", "Written in Sanskrit"],
+                correct: 2,
+                explanation: "Despite numerous attempts by scholars worldwide, the Harappan script remains undeciphered. The script contains about 400-600 distinct signs and appears on seals, pottery, and other artifacts, but no Rosetta Stone equivalent has been found."
+            },
+            {
+                question: "Which material was extensively used for making Harappan seals?",
+                options: ["Bronze", "Steatite", "Gold", "Iron"],
+                correct: 1,
+                explanation: "Steatite (soapstone) was the primary material used for making Harappan seals. These seals typically featured animals like bulls, elephants, and rhinoceros, along with undeciphered script, and were likely used for trade and administrative purposes."
+            },
+            {
+                question: "What was the most distinctive feature of Harappan urban planning?",
+                options: ["Circular cities", "Underground drainage system", "Pyramid structures", "Wooden houses"],
+                correct: 1,
+                explanation: "The sophisticated underground drainage and sewerage system was the most remarkable feature of Harappan cities. Every house was connected to the main drainage system, with covered drains running along the streets - a level of urban planning not seen elsewhere until much later."
+            },
+            {
+                question: "The Great Bath is located in which Harappan city?",
+                options: ["Harappa", "Mohenjo-daro", "Lothal", "Dholavira"],
+                correct: 1,
+                explanation: "The Great Bath is located in Mohenjo-daro and is one of the most famous structures of the Harappan Civilization. This large, well-built tank was likely used for religious or ceremonial purposes and demonstrates advanced knowledge of hydraulic engineering."
+            },
+            {
+                question: "Harappan weights were based on which ratio?",
+                options: ["1:2:4:8:16", "1:3:6:12:24", "1:2:5:10:20", "1:4:8:16:32"],
+                correct: 0,
+                explanation: "Harappan weights followed a binary system with ratios of 1:2:4:8:16 and so on. This standardized system was used across the entire civilization, indicating sophisticated trade practices and centralized administration."
+            },
+            {
+                question: "Which animal was NOT commonly depicted on Harappan seals?",
+                options: ["Bull", "Horse", "Elephant", "Rhinoceros"],
+                correct: 1,
+                explanation: "Horses were rarely, if ever, depicted on Harappan seals. The most common animals were bulls (especially the unicorn bull), elephants, rhinoceros, tigers, and water buffalo. The absence of horses is significant for dating the civilization."
+            },
+            {
+                question: "The famous 'Dancing Girl' sculpture is made of:",
+                options: ["Stone", "Bronze", "Terracotta", "Gold"],
+                correct: 1,
+                explanation: "The 'Dancing Girl' is a bronze sculpture from Mohenjo-daro, showcasing the advanced metallurgical skills of the Harappans. This 4,000-year-old artifact demonstrates their mastery of the lost-wax casting technique."
+            },
+            {
+                question: "Lothal was famous for being a:",
+                options: ["Religious center", "Port city", "Military base", "Mining town"],
+                correct: 1,
+                explanation: "Lothal was an important port city of the Harappan Civilization, located in present-day Gujarat. It had a sophisticated dockyard and was crucial for maritime trade with Mesopotamia and other regions."
+            },
+            {
+                question: "The decline of the Harappan Civilization is attributed to:",
+                options: ["Aryan invasion only", "Climate change only", "Multiple factors", "Earthquake only"],
+                correct: 2,
+                explanation: "The decline of the Harappan Civilization was likely due to multiple factors including climate change (drying of rivers), natural disasters, ecological changes, possible invasions, and internal decay. No single cause can explain the civilization's end."
+            },
+            {
+                question: "Harappan houses were typically built with:",
+                options: ["Wood", "Burnt bricks", "Stone", "Mud only"],
+                correct: 1,
+                explanation: "Harappan houses were primarily built with standardized burnt bricks. The use of burnt bricks instead of sun-dried bricks shows their advanced building technology and helped structures withstand the test of time."
+            },
+            {
+                question: "The first Harappan site to be discovered was:",
+                options: ["Mohenjo-daro", "Harappa", "Lothal", "Kalibangan"],
+                correct: 1,
+                explanation: "Harappa was the first site to be discovered in the 1920s by Dayaram Sahni. The civilization was named after this site, though Mohenjo-daro was discovered shortly after and proved to be equally important."
+            },
+            {
+                question: "Harappan civilization extended from:",
+                options: ["Punjab to Rajasthan", "Afghanistan to Gujarat", "Kashmir to Karnataka", "Bengal to Maharashtra"],
+                correct: 1,
+                explanation: "The Harappan Civilization was vast, extending from Afghanistan in the northwest to Gujarat in the southeast, covering parts of Pakistan and northwest India - an area larger than Egypt and Mesopotamia combined."
+            },
+            {
+                question: "The Harappan people were primarily:",
+                options: ["Nomadic herders", "Urban dwellers", "Mountain tribes", "Forest hunters"],
+                correct: 1,
+                explanation: "The Harappans were primarily urban dwellers living in well-planned cities. However, they also engaged in agriculture, animal husbandry, and trade. Their urban lifestyle was quite advanced for the Bronze Age."
+            },
+            {
+                question: "Which crop was NOT cultivated by the Harappans?",
+                options: ["Wheat", "Barley", "Rice", "Peas"],
+                correct: 2,
+                explanation: "While Harappans cultivated wheat, barley, peas, and other crops, rice cultivation was not practiced by them. Rice cultivation came to this region later, during the later Vedic period."
+            },
+            {
+                question: "The standard Harappan brick ratio was:",
+                options: ["1:2:3", "1:2:4", "2:3:4", "1:3:5"],
+                correct: 1,
+                explanation: "Harappan bricks followed a standardized ratio of 1:2:4 (thickness:width:length). This standardization across the entire civilization shows remarkable uniformity and planning in construction practices."
+            },
+            {
+                question: "Harappan seals were primarily used for:",
+                options: ["Decoration", "Trade and identification", "Religious ceremonies", "Currency"],
+                correct: 1,
+                explanation: "Harappan seals were primarily used for trade and identification purposes. They likely served as stamps to mark ownership of goods and may have been used by merchants and administrators to seal packages and documents."
+            },
+            {
+                question: "The famous 'Priest-King' sculpture was found at:",
+                options: ["Harappa", "Mohenjo-daro", "Lothal", "Dholavira"],
+                correct: 1,
+                explanation: "The 'Priest-King' sculpture was discovered at Mohenjo-daro. This steatite sculpture with its trefoil-patterned robe and serene expression is one of the most iconic artifacts of the Harappan Civilization."
+            },
+            {
+                question: "Harappan cities were divided into:",
+                options: ["Religious and residential areas", "Upper and lower towns", "Market and residential areas", "Administrative and commercial areas"],
+                correct: 1,
+                explanation: "Harappan cities were typically divided into two main areas: the Upper Town (citadel) which housed important buildings and possibly the elite, and the Lower Town where the common people lived and worked."
+            },
+            {
+                question: "The Harappan Civilization is also known as:",
+                options: ["Vedic Civilization", "Indus Valley Civilization", "Gangetic Civilization", "Deccan Civilization"],
+                correct: 1,
+                explanation: "The Harappan Civilization is also known as the Indus Valley Civilization because it was centered around the Indus River valley. Both names are used interchangeably in archaeological literature."
+            },
+            {
+                question: "Dholavira is located in present-day:",
+                options: ["Pakistan", "Rajasthan", "Gujarat", "Haryana"],
+                correct: 2,
+                explanation: "Dholavira is located in the Kutch district of Gujarat, India. It's one of the largest Harappan sites and is famous for its water conservation systems and the discovery of the world's first signboard."
+            },
+            {
+                question: "The Harappan people traded with:",
+                options: ["Only local regions", "Mesopotamia and Central Asia", "Only within India", "Egyptian kingdoms only"],
+                correct: 1,
+                explanation: "The Harappans had extensive trade networks reaching Mesopotamia, Central Asia, and possibly even further. Archaeological evidence includes Harappan seals found in Mesopotamian cities and Mesopotamian artifacts found in Harappan sites."
+            },
+            {
+                question: "Which metal was NOT used by the Harappans?",
+                options: ["Copper", "Bronze", "Silver", "Iron"],
+                correct: 3,
+                explanation: "The Harappans did not use iron, as they belonged to the Bronze Age. They were skilled in working with copper, bronze, silver, and gold, but iron technology came to the Indian subcontinent later."
+            },
+            {
+                question: "The Harappan Civilization belongs to which age?",
+                options: ["Stone Age", "Bronze Age", "Iron Age", "Copper Age"],
+                correct: 1,
+                explanation: "The Harappan Civilization belongs to the Bronze Age, as evidenced by their extensive use of bronze tools, weapons, and artifacts. They had mastered copper and bronze metallurgy but not iron working."
+            },
+            {
+                question: "Kalibangan is famous for:",
+                options: ["Great Bath", "Earliest ploughed field", "Port facilities", "Dancing Girl"],
+                correct: 1,
+                explanation: "Kalibangan in Rajasthan is famous for having the earliest evidence of a ploughed agricultural field. The site shows furrows that indicate the Harappans used ploughs for agriculture around 4,000 years ago."
+            },
+            {
+                question: "The main occupation of Harappan people was:",
+                options: ["Hunting", "Agriculture and trade", "Fishing", "Mining"],
+                correct: 1,
+                explanation: "Agriculture formed the backbone of Harappan economy, supplemented by extensive trade networks. They grew wheat, barley, and other crops, while also engaging in craft production and long-distance commerce."
+            },
+            {
+                question: "Harappan pottery was typically:",
+                options: ["Hand-made and painted", "Wheel-made and painted", "Hand-made and plain", "Wheel-made and plain"],
+                correct: 1,
+                explanation: "Harappan pottery was wheel-made and often painted with geometric designs, plants, and animal motifs. The potter's wheel was a significant technological advancement that allowed for uniform, high-quality pottery."
+            },
+            {
+                question: "The Harappan site of Surkotada is significant for:",
+                options: ["Horse remains", "Naval dockyard", "Granary", "Great Bath"],
+                correct: 0,
+                explanation: "Surkotada in Gujarat is significant because it's one of the few Harappan sites where horse remains have been found, though this finding is debated among archaeologists regarding its dating and context."
+            },
+            {
+                question: "Harappan drainage systems were:",
+                options: ["Open and uncovered", "Covered with stone slabs", "Made of bamboo", "Temporary structures"],
+                correct: 1,
+                explanation: "Harappan drainage systems were sophisticated, with covered drains made of carefully fitted stone slabs or bricks. This prevented contamination and odor, showing advanced understanding of public health and sanitation."
+            },
+            {
+                question: "The Harappan Civilization was discovered in:",
+                options: ["19th century", "1920s", "1940s", "1960s"],
+                correct: 1,
+                explanation: "The Harappan Civilization was discovered in the 1920s. Harappa was excavated by Dayaram Sahni in 1921, and Mohenjo-daro by R.D. Banerjee in 1922, revealing this ancient civilization to the modern world."
+            },
+            {
+                question: "Which Harappan site is called the 'Manchester of Harappan Civilization'?",
+                options: ["Harappa", "Mohenjo-daro", "Lothal", "Chanhudaro"],
+                correct: 3,
+                explanation: "Chanhudaro is called the 'Manchester of Harappan Civilization' because it was primarily a center for bead-making, shell-cutting, and other craft activities, similar to how Manchester was known for textile manufacturing."
+            },
+            {
+                question: "The unicorn depicted on many Harappan seals represents:",
+                options: ["A real animal", "A mythical creature", "A bull in profile", "A horse"],
+                correct: 2,
+                explanation: "The 'unicorn' on Harappan seals is actually a bull shown in profile, making it appear to have one horn. It was the most common motif on seals and may have had religious or symbolic significance."
+            },
+            {
+                question: "Harappan settlements show evidence of:",
+                options: ["Monarchy", "Democracy", "Theocracy", "Egalitarian society"],
+                correct: 3,
+                explanation: "Harappan settlements show evidence of a relatively egalitarian society with no clear signs of kings, palaces, or extreme wealth differences. Houses were similar in size and layout, suggesting social equality."
+            },
+            {
+                question: "The Harappan site of Banawali is located in:",
+                options: ["Punjab", "Haryana", "Rajasthan", "Gujarat"],
+                correct: 1,
+                explanation: "Banawali is located in Haryana, India. It's an important Harappan site that has provided evidence of the civilization's agricultural practices and urban planning in the region."
+            },
+            {
+                question: "Harappan people used which system of measurement?",
+                options: ["Decimal", "Binary", "Hexadecimal", "No standardized system"],
+                correct: 1,
+                explanation: "The Harappans used a sophisticated binary system of weights and measures. Their weights followed ratios like 1, 2, 4, 8, 16, and so on, showing remarkable mathematical understanding and standardization."
+            },
+            {
+                question: "The granary at Harappa was used for:",
+                options: ["Religious ceremonies", "Storing grain", "Administrative meetings", "Craft production"],
+                correct: 1,
+                explanation: "The granary at Harappa was a large structure used for storing grain, essential for food security in an urban civilization. It had sophisticated ventilation systems to prevent spoilage and pest infestation."
+            },
+            {
+                question: "Harappan cities had:",
+                options: ["Irregular street patterns", "Grid pattern streets", "Circular street patterns", "No planned streets"],
+                correct: 1,
+                explanation: "Harappan cities featured well-planned grid pattern streets with main roads running north-south and east-west. This systematic urban planning was remarkable for its time and shows advanced city planning skills."
+            },
+            {
+                question: "The largest Harappan site discovered so far is:",
+                options: ["Harappa", "Mohenjo-daro", "Dholavira", "Rakhigarhi"],
+                correct: 3,
+                explanation: "Rakhigarhi in Haryana is currently considered the largest Harappan site, covering over 550 hectares. Recent excavations have revealed its massive size and importance in the Harappan Civilization."
+            },
+            {
+                question: "Harappan beads were made from:",
+                options: ["Only clay", "Various materials including precious stones", "Only copper", "Only silver"],
+                correct: 1,
+                explanation: "Harappan craftsmen made beads from various materials including precious and semi-precious stones like carnelian, agate, jasper, as well as shells, copper, and faience, showing their advanced craftsmanship skills."
+            },
+            {
+                question: "The fire altars found at Harappan sites suggest:",
+                options: ["Fire worship", "Cooking areas", "Metalworking", "All of the above"],
+                correct: 3,
+                explanation: "Fire altars found at various Harappan sites could have served multiple purposes: religious ceremonies (fire worship), cooking areas for communities, and metalworking activities, reflecting the multi-functional nature of these structures."
+            },
+            {
+                question: "Harappan women, based on figurines, wore:",
+                options: ["Simple clothes only", "Elaborate jewelry and headdresses", "Only religious symbols", "Military armor"],
+                correct: 1,
+                explanation: "Terracotta figurines show Harappan women wearing elaborate jewelry, headdresses, and ornaments. This suggests they valued personal adornment and had skilled jewelers and craftsmen."
+            },
+            {
+                question: "The Harappan Civilization was:",
+                options: ["Entirely rural", "Entirely urban", "Both urban and rural", "Nomadic only"],
+                correct: 2,
+                explanation: "The Harappan Civilization had both urban centers with sophisticated planning and rural agricultural areas. This combination supported their complex economy and allowed for craft specialization and trade."
+            },
+            {
+                question: "Evidence of Harappan trade includes:",
+                options: ["Seals found in foreign lands", "Imported materials in Harappan sites", "Standardized weights", "All of the above"],
+                correct: 3,
+                explanation: "Evidence of Harappan trade is extensive: their seals found in Mesopotamia, imported materials like lapis lazuli from Afghanistan found in Harappan sites, and standardized weights facilitating commerce."
+            },
+            {
+                question: "The Harappan site of Shortugai is located in:",
+                options: ["Pakistan", "India", "Afghanistan", "Iran"],
+                correct: 2,
+                explanation: "Shortugai, located in northern Afghanistan, is the northernmost Harappan site. It was likely a trading post to access lapis lazuli mines in the Badakshan region."
+            },
+            {
+                question: "Harappan figurines suggest they worshipped:",
+                options: ["Only male deities", "Only female deities", "Mother Goddess and other deities", "No religious figures"],
+                correct: 2,
+                explanation: "Harappan figurines suggest they worshipped a Mother Goddess (evident from numerous female figurines) along with other deities. The 'Proto-Shiva' seal also suggests early forms of Hindu worship."
+            },
+            {
+                question: "The Harappan script appears on:",
+                options: ["Only seals", "Seals, pottery, and copper tablets", "Only religious objects", "Only administrative documents"],
+                correct: 1,
+                explanation: "The Harappan script appears on various objects including seals, pottery, copper tablets, ivory rods, and other artifacts, suggesting it was used for multiple purposes in their society."
+            },
+            {
+                question: "Harappan houses typically had:",
+                options: ["No windows", "Windows only on ground floor", "Windows facing streets", "Windows facing courtyards"],
+                correct: 3,
+                explanation: "Harappan houses were designed with windows and doors facing inner courtyards rather than streets. This provided privacy, security, and protection from dust and noise of busy streets."
+            },
+            {
+                question: "The Harappan site of Chanhudaro was specialized in:",
+                options: ["Agriculture", "Bead making and crafts", "Maritime trade", "Religious activities"],
+                correct: 1,
+                explanation: "Chanhudaro was specialized in bead making, shell cutting, and various crafts. It was an important manufacturing center in the Harappan Civilization, producing goods for trade."
+            },
+            {
+                question: "Harappan sewerage systems were:",
+                options: ["Basic open drains", "Sophisticated covered network", "Non-existent", "Only for upper classes"],
+                correct: 1,
+                explanation: "Harappan sewerage systems were remarkably sophisticated, with covered drains connecting every house to a main drainage network. This level of urban sanitation was unmatched in the ancient world."
+            },
+            {
+                question: "The decline phase of Harappan Civilization is called:",
+                options: ["Early Harappan", "Mature Harappan", "Late Harappan", "Post-Harappan"],
+                correct: 2,
+                explanation: "The decline phase (1900-1300 BCE) is called the Late Harappan period. This phase saw the abandonment of major cities, decline in urban planning, and gradual cultural transformation."
+            },
+            {
+                question: "Harappan tools were primarily made of:",
+                options: ["Iron", "Bronze and copper", "Stone only", "Wood only"],
+                correct: 1,
+                explanation: "Being a Bronze Age civilization, Harappans made tools primarily from bronze (copper-tin alloy) and copper. They also used stone tools but had mastered metallurgy for more efficient implements."
+            },
+            {
+                question: "The famous Harappan artifact 'Pashupati seal' suggests:",
+                options: ["Trade relations", "Early form of Shiva worship", "Agricultural practices", "Military organization"],
+                correct: 1,
+                explanation: "The 'Pashupati seal' from Mohenjo-daro shows a figure surrounded by animals, suggesting early forms of Shiva worship (Pashupati means 'Lord of Animals'). This indicates proto-Hindu religious practices."
+            },
+            {
+                question: "Harappan water management included:",
+                options: ["Only wells", "Wells, reservoirs, and dams", "Only natural sources", "Rain collection only"],
+                correct: 1,
+                explanation: "Harappan water management was comprehensive, including wells in most houses, large reservoirs like the Great Bath, dams for water storage, and sophisticated drainage systems for wastewater management."
+            },
+            {
+                question: "The end of the Harappan Civilization led to:",
+                options: ["Complete abandonment of the region", "Gradual cultural transformation", "Immediate foreign rule", "Total destruction"],
+                correct: 1,
+                explanation: "The end of the Harappan Civilization was gradual, leading to cultural transformation rather than complete abandonment. Some settlements continued with modified cultural practices, contributing to later Indian civilization."
+            },
+            {
+                question: "Modern research suggests the Harappan Civilization was:",
+                options: ["Smaller than previously thought", "Larger and more complex than imagined", "Purely agricultural", "Limited to Pakistan only"],
+                correct: 1,
+                explanation: "Modern archaeological research reveals the Harappan Civilization was much larger and more complex than initially imagined, covering over a million square kilometers with sophisticated urban planning, trade networks, and cultural practices."
+            },
+            {
+                question: "The Harappan legacy includes:",
+                options: ["Only archaeological remains", "Urban planning concepts still relevant today", "No lasting impact", "Only artistic influences"],
+                correct: 1,
+                explanation: "The Harappan legacy includes urban planning concepts that remain relevant today: grid-pattern streets, covered drainage systems, standardized construction, and integrated water management - all principles of modern city planning."
+            },
+            {
+                question: "Recent DNA studies suggest Harappan people were:",
+                options: ["Purely foreign migrants", "Indigenous to the region", "Mixed population with diverse origins", "Closely related to Mesopotamians"],
+                correct: 2,
+                explanation: "Recent DNA studies suggest the Harappan people were a mixed population with diverse origins, including indigenous groups and migrants from different regions, contributing to the civilization's cultural richness and diversity."
+            },
+            {
+                question: "The most significant contribution of Harappan Civilization to world history is:",
+                options: ["Military conquests", "Religious philosophy", "Urban planning and civic management", "Agricultural techniques only"],
+                correct: 2,
+                explanation: "The most significant contribution of the Harappan Civilization to world history is their advanced urban planning and civic management. Their systematic city layouts, drainage systems, and public amenities influenced urban development concepts for millennia."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let timeLeft = 15;
+        let timer;
+        let selectedAnswer = null;
+        let quizStarted = false;
+
+        function startQuiz() {
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('quizContent').style.display = 'block';
+            quizStarted = true;
+            currentQuestionIndex = 0;
+            score = 0;
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const question = questions[currentQuestionIndex];
+            document.getElementById('questionText').textContent = question.question;
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+            document.getElementById('score').textContent = score;
+            
+            // Update progress bar
+            const progress = ((currentQuestionIndex) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            
+            // Clear previous options
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            // Create option buttons
+            question.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option';
+                button.textContent = option;
+                button.onclick = () => selectAnswer(index);
+                optionsContainer.appendChild(button);
+            });
+            
+            // Hide explanation and reset
+            document.getElementById('explanation').classList.remove('show');
+            document.getElementById('nextBtn').disabled = true;
+            selectedAnswer = null;
+            
+            // Start timer
+            startTimer();
+        }
+
+        function selectAnswer(answerIndex) {
+            if (selectedAnswer !== null) return; // Already answered
+            
+            selectedAnswer = answerIndex;
+            const question = questions[currentQuestionIndex];
+            const options = document.querySelectorAll('.option');
+            
+            // Stop timer
+            clearInterval(timer);
+            
+            // Mark correct and incorrect answers
+            options.forEach((option, index) => {
+                if (index === question.correct) {
+                    option.classList.add('correct');
+                } else if (index === selectedAnswer && index !== question.correct) {
+                    option.classList.add('incorrect');
+                }
+                option.style.pointerEvents = 'none';
+            });
+            
+            // Update score
+            if (selectedAnswer === question.correct) {
+                score++;
+                document.getElementById('score').textContent = score;
+            }
+            
+            // Show explanation
+            document.getElementById('explanationText').textContent = question.explanation;
+            document.getElementById('explanation').classList.add('show');
+            
+            // Enable next button
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function startTimer() {
+            timeLeft = 15;
+            document.getElementById('timer').textContent = timeLeft + 's';
+            
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').textContent = timeLeft + 's';
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    if (selectedAnswer === null) {
+                        // Time's up, show correct answer
+                        selectAnswer(-1); // Invalid answer to trigger showing correct
+                    }
+                }
+            }, 1000);
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            
+            if (currentQuestionIndex >= questions.length) {
+                showFinalScore();
+            } else {
+                showQuestion();
+            }
+        }
+
+        function showFinalScore() {
+            document.getElementById('quizContent').style.display = 'none';
+            document.getElementById('finalScore').classList.add('show');
+            
+            const percentage = Math.round((score / questions.length) * 100);
+            document.getElementById('finalScorePercent').textContent = percentage + '%';
+            
+            let message = '';
+            if (percentage >= 90) {
+                message = 'Outstanding! You have excellent knowledge of the Harappan Civilization!';
+            } else if (percentage >= 80) {
+                message = 'Great job! You have a strong understanding of ancient Harappan culture.';
+            } else if (percentage >= 70) {
+                message = 'Good work! You have solid knowledge with room for improvement.';
+            } else if (percentage >= 60) {
+                message = 'Not bad! Consider studying more about this fascinating civilization.';
+            } else {
+                message = 'Keep learning! The Harappan Civilization has many interesting secrets to discover.';
+            }
+            
+            document.getElementById('scoreMessage').textContent = `You scored ${score} out of ${questions.length} questions correctly. ${message}`;
+        }
+
+        function restartQuiz() {
+            document.getElementById('finalScore').classList.remove('show');
+            document.getElementById('startScreen').style.display = 'block';
+            currentQuestionIndex = 0;
+            score = 0;
+            quizStarted = false;
+        }
+    </script>
+</body>
+</html>
