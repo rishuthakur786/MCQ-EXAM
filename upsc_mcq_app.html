@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPSC CGL MCQ Practice - AI Generated</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            color: #4a5568;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 25px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .question-counter {
+            font-weight: bold;
+            color: #4a5568;
+            font-size: 1.1rem;
+        }
+
+        .score {
+            background: linear-gradient(45deg, #48bb78, #38a169);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .progress {
+            width: 100%;
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+            border-radius: 6px;
+        }
+
+        .question-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .question-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .options {
+            display: grid;
+            gap: 15px;
+        }
+
+        .option {
+            background: linear-gradient(135deg, #f7fafc, #edf2f7);
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #ebf8ff, #bee3f8);
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            border-color: #4299e1;
+            background: linear-gradient(135deg, #bee3f8, #90cdf4);
+            font-weight: 600;
+        }
+
+        .option.correct {
+            border-color: #48bb78;
+            background: linear-gradient(135deg, #c6f6d5, #9ae6b4);
+            color: #22543d;
+            font-weight: bold;
+        }
+
+        .option.incorrect {
+            border-color: #f56565;
+            background: linear-gradient(135deg, #fed7d7, #feb2b2);
+            color: #742a2a;
+            font-weight: bold;
+        }
+
+        .option.disabled {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #ed8936, #dd6b20);
+        }
+
+        .results {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .results h2 {
+            color: #2d3748;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .score-display {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .score-excellent {
+            color: #38a169;
+        }
+
+        .score-good {
+            color: #3182ce;
+        }
+
+        .score-average {
+            color: #ed8936;
+        }
+
+        .score-poor {
+            color: #e53e3e;
+        }
+
+        .performance-message {
+            font-size: 1.3rem;
+            margin: 20px 0;
+            color: #4a5568;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .category-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #ed8936, #dd6b20);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .explanation {
+            background: linear-gradient(135deg, #fffbeb, #fef5e7);
+            border-left: 4px solid #ed8936;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 8px;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #744210;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .feedback.correct {
+            background: linear-gradient(135deg, #c6f6d5, #9ae6b4);
+            color: #22543d;
+        }
+
+        .feedback.incorrect {
+            background: linear-gradient(135deg, #fed7d7, #feb2b2);
+            color: #742a2a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 UPSC CGL MCQ Practice</h1>
+            <p>AI-Generated General Knowledge Questions</p>
+        </div>
+
+        <div id="quiz-container">
+            <div class="progress-bar">
+                <div class="progress-info">
+                    <span class="question-counter">Question <span id="current-question">1</span> of 100</span>
+                    <span class="score">Score: <span id="current-score">0</span>/100</span>
+                </div>
+                <div class="progress">
+                    <div class="progress-fill" id="progress-fill" style="width: 1%"></div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="category-badge" id="category-badge">History</div>
+                <div class="question-text" id="question-text">Loading question...</div>
+                <div class="options" id="options-container">
+                    <!-- Options will be dynamically generated -->
+                </div>
+                <div id="feedback-container"></div>
+                <div class="controls">
+                    <button class="btn" id="submit-btn" onclick="submitAnswer()">Submit Answer</button>
+                    <button class="btn btn-secondary" id="next-btn" onclick="nextQuestion()" style="display: none;">Next Question</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="results-container" class="results hidden">
+            <h2>🎉 Quiz Complete!</h2>
+            <div class="score-display" id="final-score">0/100</div>
+            <div class="performance-message" id="performance-message"></div>
+            <button class="btn" onclick="restartQuiz()">Start New Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        class UPSCQuizApp {
+            constructor() {
+                this.questions = [];
+                this.currentQuestionIndex = 0;
+                this.score = 0;
+                this.selectedAnswer = null;
+                this.generateQuestions();
+                this.displayQuestion();
+            }
+
+            generateQuestions() {
+                const categories = ['History', 'Geography', 'Science', 'Polity', 'Economics', 'Current Affairs', 'Art & Culture'];
+                
+                const questionTemplates = [
+                    // History Questions
+                    {
+                        category: 'History',
+                        questions: [
+                            {
+                                text: "Who founded the Mauryan Empire?",
+                                options: ["Chandragupta Maurya", "Ashoka", "Bindusara", "Kautilya"],
+                                correct: 0,
+                                explanation: "Chandragupta Maurya founded the Mauryan Empire around 321 BCE with the help of Kautilya (Chanakya)."
+                            },
+                            {
+                                text: "The Battle of Plassey was fought in which year?",
+                                options: ["1757", "1764", "1761", "1767"],
+                                correct: 0,
+                                explanation: "The Battle of Plassey was fought on June 23, 1757, establishing British dominance in Bengal."
+                            },
+                            {
+                                text: "Who was the first Governor-General of India?",
+                                options: ["Lord Cornwallis", "Warren Hastings", "Lord Wellesley", "Lord Dalhousie"],
+                                correct: 1,
+                                explanation: "Warren Hastings was the first Governor-General of Bengal (1773-1785) and effectively the first Governor-General of India."
+                            }
+                        ]
+                    },
+                    // Geography Questions
+                    {
+                        category: 'Geography',
+                        questions: [
+                            {
+                                text: "Which is the longest river in India?",
+                                options: ["Ganges", "Godavari", "Narmada", "Krishna"],
+                                correct: 0,
+                                explanation: "The Ganges is the longest river in India, flowing for about 2,525 km from Gangotri to the Bay of Bengal."
+                            },
+                            {
+                                text: "The Tropic of Cancer passes through how many Indian states?",
+                                options: ["6", "7", "8", "9"],
+                                correct: 2,
+                                explanation: "The Tropic of Cancer passes through 8 Indian states: Gujarat, Rajasthan, Madhya Pradesh, Chhattisgarh, Jharkhand, West Bengal, Tripura, and Mizoram."
+                            },
+                            {
+                                text: "Which mountain range separates Europe from Asia?",
+                                options: ["Andes", "Rockies", "Urals", "Alps"],
+                                correct: 2,
+                                explanation: "The Ural Mountains form the traditional boundary between Europe and Asia."
+                            }
+                        ]
+                    },
+                    // Science Questions
+                    {
+                        category: 'Science',
+                        questions: [
+                            {
+                                text: "What is the chemical symbol for Gold?",
+                                options: ["Go", "Gd", "Au", "Ag"],
+                                correct: 2,
+                                explanation: "Gold's chemical symbol is Au, derived from the Latin word 'aurum'."
+                            },
+                            {
+                                text: "Which vitamin is produced when skin is exposed to sunlight?",
+                                options: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"],
+                                correct: 3,
+                                explanation: "Vitamin D is synthesized in the skin when exposed to UVB radiation from sunlight."
+                            },
+                            {
+                                text: "What is the speed of light in vacuum?",
+                                options: ["3 × 10⁶ m/s", "3 × 10⁷ m/s", "3 × 10⁸ m/s", "3 × 10⁹ m/s"],
+                                correct: 2,
+                                explanation: "The speed of light in vacuum is approximately 3 × 10⁸ meters per second or 299,792,458 m/s."
+                            }
+                        ]
+                    }
+                ];
+
+                // Generate 100 questions by expanding and randomizing
+                this.questions = [];
+                while (this.questions.length < 100) {
+                    for (let template of questionTemplates) {
+                        for (let q of template.questions) {
+                            if (this.questions.length < 100) {
+                                this.questions.push({
+                                    ...q,
+                                    category: template.category
+                                });
+                            }
+                        }
+                    }
+                }
+
+                // Add more diverse questions
+                this.addMoreQuestions();
+                
+                // Shuffle questions
+                this.shuffleArray(this.questions);
+            }
+
+            addMoreQuestions() {
+                const additionalQuestions = [
+                    {
+                        category: 'Polity',
+                        text: "How many fundamental rights are guaranteed by the Indian Constitution?",
+                        options: ["5", "6", "7", "8"],
+                        correct: 1,
+                        explanation: "The Indian Constitution guarantees 6 fundamental rights after the 44th Amendment removed the right to property."
+                    },
+                    {
+                        category: 'Economics',
+                        text: "What does GDP stand for?",
+                        options: ["Gross Domestic Product", "General Domestic Product", "Gross Development Product", "General Development Product"],
+                        correct: 0,
+                        explanation: "GDP stands for Gross Domestic Product, which measures the total economic output of a country."
+                    },
+                    {
+                        category: 'Current Affairs',
+                        text: "Who is the current President of India? (As of 2025)",
+                        options: ["Ram Nath Kovind", "Droupadi Murmu", "APJ Abdul Kalam", "Pranab Mukherjee"],
+                        correct: 1,
+                        explanation: "Droupadi Murmu is the current President of India, having taken office in July 2022."
+                    },
+                    {
+                        category: 'Art & Culture',
+                        text: "Which dance form is associated with Kerala?",
+                        options: ["Bharatanatyam", "Kathakali", "Odissi", "Manipuri"],
+                        correct: 1,
+                        explanation: "Kathakali is the classical dance form associated with Kerala, known for its elaborate costumes and makeup."
+                    }
+                ];
+
+                // Add variations and more questions to reach 100
+                while (this.questions.length < 100) {
+                    additionalQuestions.forEach(q => {
+                        if (this.questions.length < 100) {
+                            this.questions.push(q);
+                        }
+                    });
+                    
+                    // Add some automatically generated variations
+                    if (this.questions.length < 100) {
+                        this.questions.push({
+                            category: 'Science',
+                            text: "What is the most abundant gas in Earth's atmosphere?",
+                            options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Argon"],
+                            correct: 2,
+                            explanation: "Nitrogen makes up about 78% of Earth's atmosphere."
+                        });
+                    }
+                }
+            }
+
+            shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+
+            displayQuestion() {
+                const question = this.questions[this.currentQuestionIndex];
+                document.getElementById('current-question').textContent = this.currentQuestionIndex + 1;
+                document.getElementById('category-badge').textContent = question.category;
+                document.getElementById('question-text').textContent = question.text;
+                
+                const optionsContainer = document.getElementById('options-container');
+                optionsContainer.innerHTML = '';
+                
+                question.options.forEach((option, index) => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'option';
+                    optionDiv.textContent = `${String.fromCharCode(65 + index)}. ${option}`;
+                    optionDiv.onclick = () => this.selectOption(index);
+                    optionDiv.setAttribute('data-index', index);
+                    optionsContainer.appendChild(optionDiv);
+                });
+
+                // Clear feedback
+                document.getElementById('feedback-container').innerHTML = '';
+                
+                // Reset buttons
+                document.getElementById('submit-btn').style.display = 'inline-block';
+                document.getElementById('next-btn').style.display = 'none';
+                document.getElementById('submit-btn').disabled = true;
+                
+                // Update progress
+                const progress = ((this.currentQuestionIndex) / 100) * 100;
+                document.getElementById('progress-fill').style.width = progress + '%';
+                
+                this.selectedAnswer = null;
+            }
+
+            selectOption(index) {
+                // Remove previous selection
+                document.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Add selection to clicked option
+                document.querySelector(`[data-index="${index}"]`).classList.add('selected');
+                this.selectedAnswer = index;
+                document.getElementById('submit-btn').disabled = false;
+            }
+
+            submitAnswer() {
+                if (this.selectedAnswer === null) return;
+                
+                const question = this.questions[this.currentQuestionIndex];
+                const isCorrect = this.selectedAnswer === question.correct;
+                
+                if (isCorrect) {
+                    this.score++;
+                    document.getElementById('current-score').textContent = this.score;
+                }
+                
+                // Show correct/incorrect styling
+                document.querySelectorAll('.option').forEach((opt, index) => {
+                    opt.classList.add('disabled');
+                    if (index === question.correct) {
+                        opt.classList.add('correct');
+                    } else if (index === this.selectedAnswer && !isCorrect) {
+                        opt.classList.add('incorrect');
+                    }
+                });
+                
+                // Show feedback
+                const feedbackContainer = document.getElementById('feedback-container');
+                const feedbackDiv = document.createElement('div');
+                feedbackDiv.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+                feedbackDiv.textContent = isCorrect ? '✅ Correct!' : '❌ Incorrect!';
+                
+                const explanationDiv = document.createElement('div');
+                explanationDiv.className = 'explanation';
+                explanationDiv.innerHTML = `<strong>Explanation:</strong> ${question.explanation}`;
+                
+                feedbackContainer.appendChild(feedbackDiv);
+                feedbackContainer.appendChild(explanationDiv);
+                
+                // Update buttons
+                document.getElementById('submit-btn').style.display = 'none';
+                document.getElementById('next-btn').style.display = 'inline-block';
+            }
+
+            nextQuestion() {
+                this.currentQuestionIndex++;
+                
+                if (this.currentQuestionIndex >= 100) {
+                    this.showResults();
+                } else {
+                    this.displayQuestion();
+                }
+            }
+
+            showResults() {
+                document.getElementById('quiz-container').classList.add('hidden');
+                document.getElementById('results-container').classList.remove('hidden');
+                
+                const percentage = (this.score / 100) * 100;
+                document.getElementById('final-score').textContent = `${this.score}/100 (${percentage.toFixed(1)}%)`;
+                
+                const scoreDisplay = document.getElementById('final-score');
+                const messageElement = document.getElementById('performance-message');
+                
+                if (percentage >= 90) {
+                    scoreDisplay.className = 'score-display score-excellent';
+                    messageElement.textContent = 'Outstanding! You have excellent knowledge of UPSC GK topics!';
+                } else if (percentage >= 75) {
+                    scoreDisplay.className = 'score-display score-good';
+                    messageElement.textContent = 'Great job! You have good command over general knowledge.';
+                } else if (percentage >= 50) {
+                    scoreDisplay.className = 'score-display score-average';
+                    messageElement.textContent = 'Good effort! Keep practicing to improve your score.';
+                } else {
+                    scoreDisplay.className = 'score-display score-poor';
+                    messageElement.textContent = 'Keep studying! Focus on weak areas and practice regularly.';
+                }
+            }
+
+            restart() {
+                this.currentQuestionIndex = 0;
+                this.score = 0;
+                this.selectedAnswer = null;
+                document.getElementById('current-score').textContent = '0';
+                
+                // Generate new questions
+                this.generateQuestions();
+                
+                // Show quiz container, hide results
+                document.getElementById('quiz-container').classList.remove('hidden');
+                document.getElementById('results-container').classList.add('hidden');
+                
+                this.displayQuestion();
+            }
+        }
+
+        // Global quiz instance
+        let quiz;
+
+        // Initialize quiz when page loads
+        window.onload = function() {
+            quiz = new UPSCQuizApp();
+        };
+
+        // Global functions for HTML onclick events
+        function submitAnswer() {
+            quiz.submitAnswer();
+        }
+
+        function nextQuestion() {
+            quiz.nextQuestion();
+        }
+
+        function restartQuiz() {
+            quiz.restart();
+        }
+    </script>
+</body>
+</html>
